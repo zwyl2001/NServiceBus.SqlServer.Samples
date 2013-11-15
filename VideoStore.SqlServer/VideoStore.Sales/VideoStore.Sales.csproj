@@ -43,8 +43,9 @@
     <Reference Include="NServiceBus.Host">
       <HintPath>..\packages\NServiceBus.Host.4.2.0\lib\net40\NServiceBus.Host.exe</HintPath>
     </Reference>
-    <Reference Include="NServiceBus.Transports.SQLServer">
-      <HintPath>..\packages\NServiceBus.SqlServer.1.0.5\lib\net40\NServiceBus.Transports.SQLServer.dll</HintPath>
+    <Reference Include="NServiceBus.Transports.SQLServer, Version=1.1.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NServiceBus.SqlServer.1.1.0\lib\net40\NServiceBus.Transports.SQLServer.dll</HintPath>
     </Reference>
     <Reference Include="System">
     </Reference>
