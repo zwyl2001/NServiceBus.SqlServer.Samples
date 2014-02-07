@@ -12,8 +12,6 @@
     <AssemblyName>VideoStore.CustomerRelations</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -74,8 +72,6 @@
     <Compile Include="EndpointConfig.cs">
     </Compile>
     <Compile Include="OrderAcceptedHandler.cs">
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs">
     </Compile>
     <Compile Include="SendLimitedTimeOffer.cs">
     </Compile>

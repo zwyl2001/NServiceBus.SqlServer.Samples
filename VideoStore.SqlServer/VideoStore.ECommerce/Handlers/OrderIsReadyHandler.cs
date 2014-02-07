@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using Microsoft.AspNet.SignalR;
-    using VideoStore.Messages.Events;
+    using Messages.Events;
     using NServiceBus;
 
     public class OrderIsReadyHandler :  IHandleMessages<DownloadIsReady>

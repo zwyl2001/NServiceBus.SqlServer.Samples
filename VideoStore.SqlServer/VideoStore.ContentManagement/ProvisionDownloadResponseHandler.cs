@@ -6,7 +6,7 @@
     using Messages.Events;
     using Messages.RequestResponse;
     using NServiceBus;
-    using VideoStore.Common;
+    using Common;
 
     public class ProvisionDownloadResponseHandler : IHandleMessages<ProvisionDownloadResponse>
     {

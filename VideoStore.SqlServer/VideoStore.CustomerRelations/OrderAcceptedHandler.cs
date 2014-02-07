@@ -4,7 +4,7 @@
     using System.Diagnostics;
     using Messages.Events;
     using NServiceBus;
-    using VideoStore.Common;
+    using Common;
 
     class OrderAcceptedHandler : IHandleMessages<OrderAccepted>
     {
