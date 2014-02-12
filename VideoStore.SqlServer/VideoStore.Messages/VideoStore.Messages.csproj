@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')">
   </Import>
@@ -44,29 +44,20 @@
     <Compile Include="Commands\SubmitOrder.cs">
     </Compile>
     <Compile Include="Events\ClientBecamePreferred.cs">
-</Compile>
+    </Compile>
     <Compile Include="Events\OrderAccepted.cs">
     </Compile>
     <Compile Include="Events\OrderCancelled.cs">
-</Compile>
+    </Compile>
     <Compile Include="Events\DownloadIsReady.cs">
     </Compile>
     <Compile Include="Events\OrderPlaced.cs">
-</Compile>
-    <Compile Include="Properties\AssemblyInfo.cs">
     </Compile>
     <Compile Include="RequestResponse\ProvisionDownloadRequest.cs">
-</Compile>
+    </Compile>
     <Compile Include="RequestResponse\ProvisionDownloadResponse.cs">
-</Compile>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets">
   </Import>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

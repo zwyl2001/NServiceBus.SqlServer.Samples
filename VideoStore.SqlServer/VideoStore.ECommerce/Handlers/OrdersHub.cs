@@ -2,7 +2,7 @@
 {
     using System.Threading;
     using Microsoft.AspNet.SignalR;
-    using VideoStore.Messages.Commands;
+    using Messages.Commands;
     using NServiceBus;
     using System.Diagnostics;
 

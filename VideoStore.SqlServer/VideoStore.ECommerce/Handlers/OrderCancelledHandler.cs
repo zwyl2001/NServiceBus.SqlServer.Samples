@@ -1,7 +1,7 @@
 ﻿namespace VideoStore.ECommerce.Handlers
 {
     using Microsoft.AspNet.SignalR;
-    using VideoStore.Messages.Events;
+    using Messages.Events;
     using NServiceBus;
 
     public class OrderCancelledHandler : IHandleMessages<OrderCancelled>
