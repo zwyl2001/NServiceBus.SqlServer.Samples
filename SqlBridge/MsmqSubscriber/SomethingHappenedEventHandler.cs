@@ -8,7 +8,7 @@
     {
         public void Handle(SomethingHappened message)
         {
-            Console.WriteLine("Received event: SomethingHappened");
+            Console.WriteLine("MSMQ Subscriber has now received the event: SomethingHappened");
         }
     }
 }
