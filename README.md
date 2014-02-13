@@ -42,7 +42,7 @@ This sample shows how to setup a sql subscriber so it can subscribe to events fr
 
 **MsmqPublisher** 
 
-- Uses version 3.3 of `NServiceBus.Host`, uses Msmq subscription storage and publishes events. Although this sample uses MSMQ Subscription storage, using either `NHibernate` or `RavenDB` subscription storage is recommended for production.
+- Uses version 3.3 of `NServiceBus.Host`, uses default subscription storage and publishes events. 
  [https://github.com/Particular/NServiceBus.SqlServer.Samples/blob/SqlBridge/SqlBridge/MsmqPublisher/EndpointConfig.cs#L9](https://github.com/Particular/NServiceBus.SqlServer.Samples/blob/SqlBridge/SqlBridge/MsmqPublisher/EndpointConfig.cs#L9)
  [https://github.com/Particular/NServiceBus.SqlServer.Samples/blob/SqlBridge/SqlBridge/MsmqPublisher/PublishEvent.cs#L19-20](https://github.com/Particular/NServiceBus.SqlServer.Samples/blob/SqlBridge/SqlBridge/MsmqPublisher/PublishEvent.cs#L19-20)
 
