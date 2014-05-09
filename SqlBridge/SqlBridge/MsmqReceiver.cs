@@ -41,7 +41,7 @@
         /// </summary>
         public bool Handle(TransportMessage message)
         {
-            var eventTypes = new Type[] { Type.GetType(message.Headers["NServiceBus.EnclosedMessageTypes"]) };
+            var eventTypes = new[] { Type.GetType(message.Headers["NServiceBus.EnclosedMessageTypes"]) };
 
             var msmqId = message.Headers["NServiceBus.MessageId"];
             
@@ -62,7 +62,7 @@
         /// <summary>
         /// Address of the MSMQ that will be receiving all of the events from all of hte MSMQ publishers.
         /// </summary>
-        public NServiceBus.Address InputAddress
+        public Address InputAddress
         {
             get { return Address.Parse(ConfigurationManager.AppSettings["SqlBridgeAddress"]); }
         }
@@ -80,8 +80,8 @@
             // use MD5 hash to get a 16-byte hash of the string
             using (var provider = new MD5CryptoServiceProvider())
             {
-                byte[] inputBytes = Encoding.Default.GetBytes(msmqMessageId);
-                byte[] hashBytes = provider.ComputeHash(inputBytes);
+                var inputBytes = Encoding.Default.GetBytes(msmqMessageId);
+                var hashBytes = provider.ComputeHash(inputBytes);
                 // generate a guid from the hash:
                 return new Guid(hashBytes);
             }
