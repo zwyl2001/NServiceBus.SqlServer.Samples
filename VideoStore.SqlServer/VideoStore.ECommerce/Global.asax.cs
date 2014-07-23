@@ -1,11 +1,15 @@
+using System.Web;
+
 namespace VideoStore.ECommerce
 {
     using System.Web.Mvc;
     using System.Web.Routing;
     using NServiceBus;
 
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
+        public static IBus Bus;
+
         protected void Application_Start()
         {
             var configure = Configure.With(builder => builder.Conventions(UnobtrusiveMessageConventions.Init) )
@@ -21,6 +25,5 @@ namespace VideoStore.ECommerce
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
 
-        public static IBus Bus;
     }
 }

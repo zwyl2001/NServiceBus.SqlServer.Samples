@@ -6,7 +6,7 @@ namespace VideoStore.Operations
     {
 	    public void Customize(ConfigurationBuilder builder)
 	    {
-          builder.Conventions(UnobtrusiveMessageConventions.Init);
+	        builder.Conventions(UnobtrusiveMessageConventions.Init);
 	    }
     }
 	
