@@ -1,18 +1,16 @@
-﻿namespace VideoStore.Common
+﻿namespace VideoStore
 {
     using NServiceBus;
 
-    class UnobtrusiveMessageConventions : IWantToRunBeforeConfiguration
+    static class UnobtrusiveMessageConventions
     {
-        public void Init()
+        public static void Init(Configure.ConventionsBuilder conventionsBuilder)
         {
-            Configure.Instance
-                     .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("VideoStore") && t.Namespace.EndsWith("Commands"))
-                     .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("VideoStore") && t.Namespace.EndsWith("Events"))
-                     .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("VideoStore") && t.Namespace.EndsWith("RequestResponse"))
-                     .DefiningEncryptedPropertiesAs(p => p.Name.StartsWith("Encrypted"));
+            conventionsBuilder
+                .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.StartsWith("VideoStore") && t.Namespace.EndsWith("Commands"))
+                .DefiningEventsAs(t => t.Namespace != null && t.Namespace.StartsWith("VideoStore") && t.Namespace.EndsWith("Events"))
+                .DefiningMessagesAs(t => t.Namespace != null && t.Namespace.StartsWith("VideoStore") && t.Namespace.EndsWith("RequestResponse"))
+                .DefiningEncryptedPropertiesAs(p => p.Name.StartsWith("Encrypted"));
         }
     }
 }
-
-
