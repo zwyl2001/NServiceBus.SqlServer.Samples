@@ -2,18 +2,22 @@
 {
     using System;
     using System.Configuration;
+    using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
     using NServiceBus;
     using NServiceBus.Satellites;
     using NServiceBus.Transports;
     using NServiceBus.Transports.Msmq;
+    using NServiceBus.Unicast;
 
     /// <summary>
     /// Implements an advanced satellite. Allows to receive messages on a different transport.
     /// </summary>
     class MsmqReceiver : IAdvancedSatellite
     {
+        public Configure Configure { get; set; }
+        public CriticalError CriticalError { get; set; }
         /// <summary>
         /// Since this endpoint's transport is usingSqlServer, the IPublishMessages will be using the SqlTransport to publish
         /// messages
@@ -27,7 +31,7 @@
         /// <returns>MsmqTransport receiver</returns>
         public Action<NServiceBus.Unicast.Transport.TransportReceiver> GetReceiverCustomization()
         {
-            return (tr => {tr.Receiver = new MsmqDequeueStrategy(); });
+            return (tr => {tr.Receiver = new MsmqDequeueStrategy(Configure, CriticalError, new MsmqUnitOfWork()); });
         }
 
         public bool Disabled
@@ -55,7 +59,7 @@
                 message.Headers["NServiceBus.MessageId"] = BuildDeterministicGuid(msmqId).ToString();
             }
 
-            Publisher.Publish(message, eventTypes);
+            Publisher.Publish(message, new PublishOptions(eventTypes.First()));
             return true;
         }
 

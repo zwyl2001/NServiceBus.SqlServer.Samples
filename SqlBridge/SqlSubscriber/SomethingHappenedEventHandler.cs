@@ -1,9 +1,9 @@
-﻿using System;
-using Events;
-using NServiceBus;
-
-namespace SqlSubscriber
+﻿namespace SqlSubscriber
 {
+    using System;
+    using Events;
+    using NServiceBus;
+
     class SomethingHappenedEventHandler : IHandleMessages<SomethingHappened>
     {
         public void Handle(SomethingHappened message)

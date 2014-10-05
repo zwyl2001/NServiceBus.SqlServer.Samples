@@ -25,7 +25,7 @@
             Data.ClientId = message.ClientId;
 
             RequestTimeout(TimeSpan.FromSeconds(20), new BuyersRemorseIsOver());
-            Console.Out.WriteLine("Starting cool down period for order #{0}.", Data.OrderNumber);
+            Console.WriteLine("Starting cool down period for order #{0}.", Data.OrderNumber);
         }
 
         public void Timeout(BuyersRemorseIsOver state)
@@ -51,25 +51,26 @@
         {
             if (DebugFlagMutator.Debug)
             {
-                   Debugger.Break();
+                Debugger.Break();
             }
 
             MarkAsComplete();
 
-            Bus.Publish(Bus.CreateInstance<OrderCancelled>(o =>
+            Bus.Publish<OrderCancelled>(o =>
                 {
                     o.OrderNumber = message.OrderNumber;
                     o.ClientId = message.ClientId;
-                }));
+                });
 
-            Console.Out.WriteLine("Order #{0} was cancelled.", message.OrderNumber);
+            Console.WriteLine("Order #{0} was cancelled.", message.OrderNumber);
         }
 
-        public override void ConfigureHowToFindSaga()
+
+        protected override void ConfigureHowToFindSaga(SagaPropertyMapper<OrderData> mapper)
         {
-            ConfigureMapping<SubmitOrder>(m => m.OrderNumber)
+           mapper.ConfigureMapping<SubmitOrder>(m => m.OrderNumber)
                 .ToSaga(s=>s.OrderNumber);
-            ConfigureMapping<CancelOrder>(m => m.OrderNumber)
+           mapper.ConfigureMapping<CancelOrder>(m => m.OrderNumber)
                 .ToSaga(s=>s.OrderNumber);
         }
 
@@ -84,6 +85,7 @@
         public class BuyersRemorseIsOver
         {
         }
+
     }
 
     

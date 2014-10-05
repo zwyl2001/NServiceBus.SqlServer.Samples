@@ -1,11 +1,9 @@
-﻿using NServiceBus;
-
-namespace Events
+﻿namespace Events
 {
     /// <summary>
     /// Some event that is being published by MSMQ endpoint
     /// </summary>
-    public class SomethingHappened : IEvent
+    public class SomethingHappened 
     {
     }
 }

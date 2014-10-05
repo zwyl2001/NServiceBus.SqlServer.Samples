@@ -33,16 +33,17 @@ The ECommerce endpoint is implemented as an ASP.NET MVC4 application which uses 
 
 ##Sql Bridge (Transport Integration)
 
-This sample shows how to setup a sql subscriber so it can subscribe to events from a Version 3.3 MSMQ publisher. The solution comprises of these 5 projects
+This sample shows how to setup a sql subscriber so it can subscribe to events from a Version 4.x MSMQ publisher. The solution comprises of these 5 projects.
+**NOTE:** - This sample uses NHibernate persistence. It uses a database called, `PersistenceForMsmqTransport` for MSMQ transport endpoints and a different database called, `PersistenceForSqlTransport` for SQL Transport endpoints.
 
 **Events** 
 
-- Uses version 3.3 of `NServiceBus.Interfaces` and defines an event that implements IEvent
+- Uses a POCO class for defining an event. 
 [https://github.com/Particular/NServiceBus.SqlServer.Samples/tree/master/SqlBridge/Events/SomethingHappenedEvent.cs#L8](https://github.com/Particular/NServiceBus.SqlServer.Samples/tree/master/SqlBridge/Events/SomethingHappenedEvent.cs#L8)
 
 **MsmqPublisher** 
 
-- Uses version 3.3 of `NServiceBus.Host`, uses default subscription storage and publishes events. 
+- Uses version 4.x of `NServiceBus.Host`, use unobtrusive conventions to consume the events, uses NHibernate subscription storage and publishes events. 
  [https://github.com/Particular/NServiceBus.SqlServer.Samples/tree/master/SqlBridge/MsmqPublisher/EndpointConfig.cs#L10](https://github.com/Particular/NServiceBus.SqlServer.Samples/tree/master/SqlBridge/MsmqPublisher/EndpointConfig.cs#L10)
  [https://github.com/Particular/NServiceBus.SqlServer.Samples/tree/master/SqlBridge/MsmqPublisher/PublishEvent.cs#L19-20](https://github.com/Particular/NServiceBus.SqlServer.Samples/tree/master/SqlBridge/MsmqPublisher/PublishEvent.cs#L19-20)
 
@@ -52,13 +53,58 @@ Uses the latest version of `NServiceBus.Host`, uses MsmqTransport and subscribes
 
 **SqlBridge** 
 
-- Its an NServiceBus Host, uses the latest released version, and uses SqlTransport.
+- Its an NServiceBus Host, uses the latest released version, and uses SqlTransport and NHibernate Persistence.
  [https://github.com/Particular/NServiceBus.SqlServer.Samples/tree/master/SqlBridge/SqlBridge/EndpointConfig.cs#L9](https://github.com/Particular/NServiceBus.SqlServer.Samples/tree/master/SqlBridge/SqlBridge/EndpointConfig.cs#L9)
 - This endpoint is setup to read messages that arrive in a specified "MSMQ" Queue configured in app.config via an advanced satellite.
  [https://github.com/Particular/NServiceBus.SqlServer.Samples/tree/master/SqlBridge/SqlBridge/App.config#L18](https://github.com/Particular/NServiceBus.SqlServer.Samples/tree/master/SqlBridge/SqlBridge/App.config#L18)
 - Create a transactional MSMQ called `SqlMsmqTransportBridge` or whatever queue name specified in the app.config. This will be the queue that the SqlBridge endpoint will look for events published by the MSMQ publisher.  
 - Add a new entry in the Subscriptions collection for the new queue specified in the app.config to the list of subscribers in the MsmqPublisher's subscription storage. 
+
+**How to add an additional entry to the existing list of subscribers?**
+**If using RavenDB as the persistence:**
+
+- To add the SqlMsmqTransportBridge as one of the subscribers, go to http://localhost:8080/raven/studio.html#/documents?database=MsmqPublisher
+
+- Double click on the subscriptions document to open it.
+
+- Add a new entry in the Clients section for SqlMsmqTransportBridge and press Save. For example, after adding, it would appear like this below:
+
+```
+{
+  "MessageType": "Events.SomethingHappened, Version=0.0.0.0",
+  "Clients": [
+    {
+      "Queue": "MsmqSubscriber",
+      "Machine": "MachineName"
+    }, 
+        {
+      "Queue": "SqlMsmqTransportBridge",
+      "Machine": "MachineName"
+    }
+  ]
+}
+```
+
+**If using NHibernate as the persistence:**
+Run a similar script like below to add the new entry:
+
+```
+  Use PersistenceForMsmqTransport
+  Go
   
+  INSERT INTO Subscription
+           ([SubscriberEndpoint]
+           ,[MessageType]
+           ,[Version]
+           ,[TypeName])
+     VALUES
+           ('SqlMsmqTransportBridge@MachineName',
+           'Events.SomethingHappened,0.0.0.0',
+           '0.0.0.0',
+           'Events.SomethingHappened')
+  GO
+```
+where the `SqlMsmqTransportBridge` is the name of the queue that the SqlBridge will be watching. 
 
 *How does the advanced satellite work?*
 
