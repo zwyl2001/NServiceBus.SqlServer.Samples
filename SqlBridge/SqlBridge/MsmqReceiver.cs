@@ -2,18 +2,22 @@
 {
     using System;
     using System.Configuration;
+    using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
     using NServiceBus;
     using NServiceBus.Satellites;
     using NServiceBus.Transports;
     using NServiceBus.Transports.Msmq;
+    using NServiceBus.Unicast;
 
     /// <summary>
     /// Implements an advanced satellite. Allows to receive messages on a different transport.
     /// </summary>
     class MsmqReceiver : IAdvancedSatellite
     {
+        public Configure Configure { get; set; }
+        public CriticalError CriticalError { get; set; }
         /// <summary>
         /// Since this endpoint's transport is usingSqlServer, the IPublishMessages will be using the SqlTransport to publish
         /// messages
@@ -27,7 +31,7 @@
         /// <returns>MsmqTransport receiver</returns>
         public Action<NServiceBus.Unicast.Transport.TransportReceiver> GetReceiverCustomization()
         {
-            return (tr => {tr.Receiver = new MsmqDequeueStrategy(); });
+            return (tr => {tr.Receiver = new MsmqDequeueStrategy(Configure, CriticalError, new MsmqUnitOfWork()); });
         }
 
         public bool Disabled
@@ -41,7 +45,7 @@
         /// </summary>
         public bool Handle(TransportMessage message)
         {
-            var eventTypes = new Type[] { Type.GetType(message.Headers["NServiceBus.EnclosedMessageTypes"]) };
+            var eventTypes = new[] { Type.GetType(message.Headers["NServiceBus.EnclosedMessageTypes"]) };
 
             var msmqId = message.Headers["NServiceBus.MessageId"];
             
@@ -55,14 +59,14 @@
                 message.Headers["NServiceBus.MessageId"] = BuildDeterministicGuid(msmqId).ToString();
             }
 
-            Publisher.Publish(message, eventTypes);
+            Publisher.Publish(message, new PublishOptions(eventTypes.First()));
             return true;
         }
 
         /// <summary>
         /// Address of the MSMQ that will be receiving all of the events from all of hte MSMQ publishers.
         /// </summary>
-        public NServiceBus.Address InputAddress
+        public Address InputAddress
         {
             get { return Address.Parse(ConfigurationManager.AppSettings["SqlBridgeAddress"]); }
         }
@@ -80,8 +84,8 @@
             // use MD5 hash to get a 16-byte hash of the string
             using (var provider = new MD5CryptoServiceProvider())
             {
-                byte[] inputBytes = Encoding.Default.GetBytes(msmqMessageId);
-                byte[] hashBytes = provider.ComputeHash(inputBytes);
+                var inputBytes = Encoding.Default.GetBytes(msmqMessageId);
+                var hashBytes = provider.ComputeHash(inputBytes);
                 // generate a guid from the hash:
                 return new Guid(hashBytes);
             }

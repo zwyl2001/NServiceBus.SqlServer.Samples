@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Events;
-using NServiceBus;
-
-namespace SqlSubscriber
+﻿namespace SqlSubscriber
 {
+    using System;
+    using Events;
+    using NServiceBus;
+
     class SomethingHappenedEventHandler : IHandleMessages<SomethingHappened>
     {
         public void Handle(SomethingHappened message)

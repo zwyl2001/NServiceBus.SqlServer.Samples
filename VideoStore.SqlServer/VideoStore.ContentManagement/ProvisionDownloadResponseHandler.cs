@@ -43,7 +43,7 @@
                 }
             });
 
-            Console.Out.WriteLine("Downloads for Order #{0} is ready, publishing it.", message.OrderNumber);
+            Console.WriteLine("Downloads for Order #{0} is ready, publishing it.", message.OrderNumber);
         }
     }
 }
